@@ -1,5 +1,6 @@
-using BookStoreApp.Blazor.Server.UI.Data;
+using Blazored.LocalStorage;
 using BookStoreApp.Blazor.Server.UI.Services.Base;
+using BookStoreApp.Blazor.Server.UI.Services.Authentication;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -8,10 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddBlazoredLocalStorage();
 
 // "IClient" is the Base Interface for Client Interface, "Client" is the Base Class Name
 builder.Services.AddHttpClient<IClient, Client>(cl => cl.BaseAddress = new Uri("https://localhost:7024"));
+// order is matter, urutan harus ssesuai kebutuhan
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 var app = builder.Build();
 
