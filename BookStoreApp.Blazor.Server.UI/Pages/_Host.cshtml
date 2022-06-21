@@ -2,7 +2,11 @@
 @namespace BookStoreApp.Blazor.Server.UI.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    Layout = "_Layout";
+	Layout = "_Layout";
 }
 
-<component type="typeof(App)" render-mode="ServerPrerendered" />
+@*
+    If you're trying to use localStorage or other JS feature, you can't set pre-rendered.
+    otherwise set it to "Server" rather than "ServerPrerendered"
+*@
+<component type="typeof(App)" render-mode="Server" />
