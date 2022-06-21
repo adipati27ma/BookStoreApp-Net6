@@ -28,7 +28,8 @@ namespace BookStoreApp.Blazor.Server.UI.Services.Authentication
 			await localStorage.SetItemAsync("accessToken", response.Token);
 
 			// Change auth state of app (with new Provider)
-
+			// this is how use custom state provider with original provider in the Constructor
+			await ((ApiAuthenticationStateProvider)authenticationStateProvider).LoggedIn();
 
 
 			return true;

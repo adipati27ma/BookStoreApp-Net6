@@ -1,6 +1,8 @@
 using Blazored.LocalStorage;
 using BookStoreApp.Blazor.Server.UI.Services.Base;
 using BookStoreApp.Blazor.Server.UI.Services.Authentication;
+using BookStoreApp.Blazor.Server.UI.Providers;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -13,8 +15,10 @@ builder.Services.AddBlazoredLocalStorage();
 
 // "IClient" is the Base Interface for Client Interface, "Client" is the Base Class Name
 builder.Services.AddHttpClient<IClient, Client>(cl => cl.BaseAddress = new Uri("https://localhost:7024"));
+
 // order is matter, urutan harus ssesuai kebutuhan
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<ApiAuthenticationStateProvider>());
 
 var app = builder.Build();
 
