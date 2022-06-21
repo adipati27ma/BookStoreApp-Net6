@@ -54,7 +54,7 @@ namespace BookStoreApp.Blazor.Server.UI.Providers
 
 		public async Task LoggedOut()
 		{
-			//await localStorage.RemoveItemAsync("accessToken");
+			await localStorage.RemoveItemAsync("accessToken");
 			var nobody = new ClaimsPrincipal(new ClaimsIdentity());
 			var authState = Task.FromResult(new AuthenticationState(nobody));
 			NotifyAuthenticationStateChanged(authState);
