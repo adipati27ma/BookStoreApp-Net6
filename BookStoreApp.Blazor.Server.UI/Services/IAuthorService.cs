@@ -1,6 +1,9 @@
-﻿namespace BookStoreApp.Blazor.Server.UI.Services
+﻿using BookStoreApp.Blazor.Server.UI.Services.Base;
+
+namespace BookStoreApp.Blazor.Server.UI.Services
 {
-	public class IAuthorService
+	public interface IAuthorService
 	{
+		Task<Response<List<AuthorReadOnlyDto>>> GetAuthors();
 	}
 }
