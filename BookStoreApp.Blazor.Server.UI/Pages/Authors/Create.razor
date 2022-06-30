@@ -1,38 +1,39 @@
 ﻿@page "/authors/create/"
 @inject IAuthorService authorService
 @inject NavigationManager navManager
+@attribute [Authorize(Roles = "Administrator")]
 
 <h3>Create New Author</h3>
 <EditForm Model="Author" OnValidSubmit="HandleCreateAuthor">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+	<DataAnnotationsValidator />
+	<ValidationSummary />
 
-    <div class="form-group">
-			<label for="firstname">First Name</label>
-			<InputText class="form-control" @bind-Value="Author.FirstName" id="firstname" />
-			<ValidationMessage For="@(() => Author.FirstName)" />
-		</div>
-		<br />
-		<div class="form-group">
-			<label for="email">Last Name</label>
-			<InputText class="form-control" @bind-Value="Author.LastName" id="lastname" />
-			<ValidationMessage For="@(() => Author.LastName)" />
-		</div>
-		<br />
-		<div class="form-group">
-			<label for="email">Biography</label>
-			<InputText class="form-control" @bind-Value="Author.Bio" id="firstname"bio />
-			<ValidationMessage For="@(() => Author.Bio)" />
-		</div>
+	<div class="form-group">
+		<label for="firstname">First Name</label>
+		<InputText class="form-control" @bind-Value="Author.FirstName" id="firstname" />
+		<ValidationMessage For="@(() => Author.FirstName)" />
+	</div>
+	<br />
+	<div class="form-group">
+		<label for="email">Last Name</label>
+		<InputText class="form-control" @bind-Value="Author.LastName" id="lastname" />
+		<ValidationMessage For="@(() => Author.LastName)" />
+	</div>
+	<br />
+	<div class="form-group">
+		<label for="email">Biography</label>
+		<InputText class="form-control" @bind-Value="Author.Bio" id="firstname" bio />
+		<ValidationMessage For="@(() => Author.Bio)" />
+	</div>
 
-		<button type="submit" class="btn btn-primary">
-			<span class="oi oi-pencil"></span>
-			Create Author
-		</button>
-		<button @onclick="BackToList" class="btn btn-outline-secondary">
-			<span class="oi oi-media-skip-backward"></span>
-			Back To List
-		</button>
+	<button type="submit" class="btn btn-primary">
+		<span class="oi oi-pencil"></span>
+		Create Author
+	</button>
+	<button @onclick="BackToList" class="btn btn-outline-secondary">
+		<span class="oi oi-media-skip-backward"></span>
+		Back To List
+	</button>
 
 </EditForm>
 
@@ -48,7 +49,8 @@
 		}
 	}
 
-	private void BackToList() {
+	private void BackToList()
+	{
 		navManager.NavigateTo("/authors/");
 	}
 }
