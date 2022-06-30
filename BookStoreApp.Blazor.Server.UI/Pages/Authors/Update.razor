@@ -1,38 +1,39 @@
 ﻿@page "/authors/update/{id:int}"
 @inject IAuthorService authorService
 @inject NavigationManager navManager
+@attribute [Authorize(Roles = Roles.Administrator)]
 
 <h3>Edit Author</h3>
 <EditForm Model="Author" OnValidSubmit="HandleUpdateAuthor">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+	<DataAnnotationsValidator />
+	<ValidationSummary />
 
-    <div class="form-group">
-			<label for="firstname">First Name</label>
-			<InputText class="form-control" @bind-Value="Author.FirstName" id="firstname" />
-			<ValidationMessage For="@(() => Author.FirstName)" />
-		</div>
-		<br />
-		<div class="form-group">
-			<label for="lastname">Last Name</label>
-			<InputText class="form-control" @bind-Value="Author.LastName" id="lastname" />
-			<ValidationMessage For="@(() => Author.LastName)" />
-		</div>
-		<br />
-		<div class="form-group">
-			<label for="bio">Biography</label>
-			<InputText class="form-control" @bind-Value="Author.Bio" id="bio"bio />
-			<ValidationMessage For="@(() => Author.Bio)" />
-		</div>
+	<div class="form-group">
+		<label for="firstname">First Name</label>
+		<InputText class="form-control" @bind-Value="Author.FirstName" id="firstname" />
+		<ValidationMessage For="@(() => Author.FirstName)" />
+	</div>
+	<br />
+	<div class="form-group">
+		<label for="lastname">Last Name</label>
+		<InputText class="form-control" @bind-Value="Author.LastName" id="lastname" />
+		<ValidationMessage For="@(() => Author.LastName)" />
+	</div>
+	<br />
+	<div class="form-group">
+		<label for="bio">Biography</label>
+		<InputText class="form-control" @bind-Value="Author.Bio" id="bio" bio />
+		<ValidationMessage For="@(() => Author.Bio)" />
+	</div>
 
-		<button type="submit" class="btn btn-primary">
-			<span class="oi oi-pencil"></span>
-			Update Author
-		</button>
-		<button @onclick="BackToList" class="btn btn-outline-secondary">
-			<span class="oi oi-media-skip-backward"></span>
-			Back To List
-		</button>
+	<button type="submit" class="btn btn-primary">
+		<span class="oi oi-pencil"></span>
+		Update Author
+	</button>
+	<button @onclick="BackToList" class="btn btn-outline-secondary">
+		<span class="oi oi-media-skip-backward"></span>
+		Back To List
+	</button>
 </EditForm>
 
 @code {
@@ -44,7 +45,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		var response = await authorService.GetAuthorForUpdate(Id);
-		if(response.Success)
+		if (response.Success)
 		{
 			Author = response.Data;
 		}
@@ -59,7 +60,8 @@
 		}
 	}
 
-	private void BackToList() {
+	private void BackToList()
+	{
 		navManager.NavigateTo("/authors/");
 	}
 }
