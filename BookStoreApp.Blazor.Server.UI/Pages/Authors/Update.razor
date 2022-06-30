@@ -1,0 +1,66 @@
+﻿@page "/authors/update/{Id:int}"
+@inject IAuthorService authorService
+@inject NavigationManager navManager
+
+<h3>Edit Author</h3>
+<EditForm Model="Author" OnValidSubmit="HandleUpdateAuthor">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+			<label for="firstname">First Name</label>
+			<InputText class="form-control" @bind-Value="Author.FirstName" id="firstname" />
+			<ValidationMessage For="@(() => Author.FirstName)" />
+		</div>
+		<br />
+		<div class="form-group">
+			<label for="email">Last Name</label>
+			<InputText class="form-control" @bind-Value="Author.LastName" id="lastname" />
+			<ValidationMessage For="@(() => Author.LastName)" />
+		</div>
+		<br />
+		<div class="form-group">
+			<label for="email">Biography</label>
+			<InputText class="form-control" @bind-Value="Author.Bio" id="firstname"bio />
+			<ValidationMessage For="@(() => Author.Bio)" />
+		</div>
+
+		<button type="submit" class="btn btn-primary">
+			<span class="oi oi-pencil"></span>
+			Update Author
+		</button>
+		<button @onclick="BackToList" class="btn btn-outline-secondary">
+			<span class="oi oi-media-skip-backward"></span>
+			Back To List
+		</button>
+
+</EditForm>
+
+@code {
+	// parameter must have a "public"
+	[Parameter] public int Id { get; set; }
+
+	private AuthorUpdateDto Author = new AuthorUpdateDto();
+
+	protected override async Task OnInitializedAsync()
+	{
+		var response = await authorService.GetAuthorForUpdate(Id);
+		if(response.Success)
+		{
+			Author = response.Data;
+		}
+	}
+
+	private async Task HandleUpdateAuthor()
+	{
+		var response = await authorService.EditAuthor(Id, Author);
+		if (response.Success)
+		{
+			BackToList();
+		}
+	}
+
+	private void BackToList() {
+		navManager.NavigateTo("/authors/");
+	}
+}

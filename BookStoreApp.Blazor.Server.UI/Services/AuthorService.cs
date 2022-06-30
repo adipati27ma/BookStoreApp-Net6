@@ -1,4 +1,5 @@
-﻿using Blazored.LocalStorage;
+﻿using AutoMapper;
+using Blazored.LocalStorage;
 using BookStoreApp.Blazor.Server.UI.Services;
 using BookStoreApp.Blazor.Server.UI.Services.Base;
 
@@ -7,13 +8,16 @@ namespace BookStoreApp.Blazor.Server.UI.Services
     public class AuthorService : BaseHttpServices, IAuthorService
     {
         private readonly IClient client;
-        private readonly ILocalStorageService localstorage;
+		private readonly IMapper mapper;
 
-        public AuthorService(IClient client, ILocalStorageService localstorage) : base(client, localstorage)
+		//private readonly ILocalStorageService localstorage;
+
+		public AuthorService(IClient client, ILocalStorageService localstorage, IMapper mapper) : base(client, localstorage)
         {
             this.client = client;
-            this.localstorage = localstorage;
-        }
+			this.mapper = mapper;
+			//this.localstorage = localstorage;
+		}
 
         public async Task<Response<int>> CreateAuthor(AuthorCreateDto author)
         {
@@ -32,7 +36,70 @@ namespace BookStoreApp.Blazor.Server.UI.Services
             return response;
         }
 
-        public async Task<Response<List<AuthorReadOnlyDto>>> GetAuthors()
+		public async Task<Response<int>> EditAuthor(int id, AuthorUpdateDto author)
+		{
+            Response<int> response = new();
+            try
+            {
+                await GetBearerToken();
+                await client.AuthorsPUTAsync(id, author);
+            }
+            catch (ApiException exception)
+            {
+
+                response = ConvertApiExceptions<int>(exception);
+            }
+
+            return response;
+        }
+
+		public async Task<Response<AuthorReadOnlyDto>> GetAuthor(int id)
+		{
+            Response<AuthorReadOnlyDto> response;
+
+            try
+            {
+                // attach header, fetchData, return data & the success flag
+                await GetBearerToken();
+                var data = await client.AuthorsGETAsync(id);
+                response = new Response<AuthorReadOnlyDto>
+                {
+                    Data = data,
+                    Success = true,
+                };
+            }
+            catch (ApiException exception)
+            {
+                response = ConvertApiExceptions<AuthorReadOnlyDto>(exception);
+            }
+
+            return response;
+        }
+
+		public async Task<Response<AuthorUpdateDto>> GetAuthorForUpdate(int id)
+		{
+            Response<AuthorUpdateDto> response;
+
+            try
+            {
+                // attach header, fetchData, return data & the success flag
+                await GetBearerToken();
+                var data = await client.AuthorsGETAsync(id);
+                response = new Response<AuthorUpdateDto>
+                {
+                    Data = mapper.Map<AuthorUpdateDto>(data),
+                    Success = true,
+                };
+            }
+            catch (ApiException exception)
+            {
+                response = ConvertApiExceptions<AuthorUpdateDto>(exception);
+            }
+
+            return response;
+        }
+
+		public async Task<Response<List<AuthorReadOnlyDto>>> GetAuthors()
         {
             Response<List<AuthorReadOnlyDto>> response;
 
