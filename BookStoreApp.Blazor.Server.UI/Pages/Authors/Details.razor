@@ -1,13 +1,12 @@
-﻿@page "/authors/update/{id:int}"
+﻿@page "/authors/details/{id:int}"
 @inject IAuthorService authorService
 @inject NavigationManager navManager
 
-<h3>Edit Author</h3>
-<EditForm Model="Author" OnValidSubmit="HandleUpdateAuthor">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<h3>Author Details</h3>
 
-    <div class="form-group">
+<EditForm Model="Author">
+	<fieldset disabled>
+		<div class="form-group">
 			<label for="firstname">First Name</label>
 			<InputText class="form-control" @bind-Value="Author.FirstName" id="firstname" />
 			<ValidationMessage For="@(() => Author.FirstName)" />
@@ -24,10 +23,11 @@
 			<InputText class="form-control" @bind-Value="Author.Bio" id="bio"bio />
 			<ValidationMessage For="@(() => Author.Bio)" />
 		</div>
-
-		<button type="submit" class="btn btn-primary">
+	</fieldset>
+    
+		<button @onclick="GoToEdit" class="btn btn-warning">
 			<span class="oi oi-pencil"></span>
-			Update Author
+			Edit Author
 		</button>
 		<button @onclick="BackToList" class="btn btn-outline-secondary">
 			<span class="oi oi-media-skip-backward"></span>
@@ -39,27 +39,22 @@
 	// parameter must have a "public"
 	[Parameter] public int Id { get; set; }
 
-	private AuthorUpdateDto Author = new AuthorUpdateDto();
+	private AuthorReadOnlyDto Author = new AuthorReadOnlyDto();
 
 	protected override async Task OnInitializedAsync()
 	{
-		var response = await authorService.GetAuthorForUpdate(Id);
+		var response = await authorService.GetAuthor(Id);
 		if(response.Success)
 		{
 			Author = response.Data;
 		}
 	}
 
-	private async Task HandleUpdateAuthor()
-	{
-		var response = await authorService.EditAuthor(Id, Author);
-		if (response.Success)
-		{
-			BackToList();
-		}
-	}
-
 	private void BackToList() {
 		navManager.NavigateTo("/authors/");
+	}
+	
+	private void GoToEdit() {
+		navManager.NavigateTo($"/authors/update/{Author.Id}");
 	}
 }

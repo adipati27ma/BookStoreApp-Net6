@@ -57,10 +57,13 @@
 		try
 		{
 			await httpClient.RegisterAsync(RegistrationModel);
+
+			// this only run if await httpClient is return 200 code
 			NavigateToLogin();
 		}
 		catch (ApiException ex)
 		{
+			// expand handler for statusCode = 201,204, etc.
 			if (ex.StatusCode >= 200 && ex.StatusCode <= 299)
 			{
 				NavigateToLogin();

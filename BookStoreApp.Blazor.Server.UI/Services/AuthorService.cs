@@ -24,6 +24,7 @@ namespace BookStoreApp.Blazor.Server.UI.Services
             Response<int> response = new();
             try
             {
+                // attach header, post Data, ...
                 await GetBearerToken();
                 await client.AuthorsPOSTAsync(author);
             }
@@ -82,7 +83,7 @@ namespace BookStoreApp.Blazor.Server.UI.Services
 
             try
             {
-                // attach header, fetchData, return data & the success flag
+                // attach header, fetchData, map data type + return data & the success flag
                 await GetBearerToken();
                 var data = await client.AuthorsGETAsync(id);
                 response = new Response<AuthorUpdateDto>

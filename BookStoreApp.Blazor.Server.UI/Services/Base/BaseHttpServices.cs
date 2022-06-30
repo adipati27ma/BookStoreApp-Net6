@@ -39,6 +39,7 @@ namespace BookStoreApp.Blazor.Server.UI.Services.Base
 				};
 			}
 
+			// expand handler for post/put statusCode = 201 etc.
 			if (apiException.StatusCode >= 200 && apiException.StatusCode <= 299)
 			{
 				return new Response<Guid>
