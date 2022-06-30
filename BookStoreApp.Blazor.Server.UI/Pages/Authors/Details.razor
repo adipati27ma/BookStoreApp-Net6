@@ -20,41 +20,66 @@
 		<br />
 		<div class="form-group">
 			<label for="bio">Biography</label>
-			<InputText class="form-control" @bind-Value="Author.Bio" id="bio"bio />
+			<InputText class="form-control" @bind-Value="Author.Bio" id="bio" bio />
 			<ValidationMessage For="@(() => Author.Bio)" />
 		</div>
 	</fieldset>
-    
-		<button @onclick="GoToEdit" class="btn btn-warning">
-			<span class="oi oi-pencil"></span>
-			Edit Author
-		</button>
-		<button @onclick="BackToList" class="btn btn-outline-secondary">
-			<span class="oi oi-media-skip-backward"></span>
-			Back To List
-		</button>
+
+	@if (Author.Books == null || Author.Books.Any() == false)
+	{
+
+		<div class="alert alert-dismissible alert-secondary">
+			No Books for this Author.
+		</div>
+
+	}
+	else
+	{
+		foreach (var book in Author.Books)
+		{
+			<div class="card" style="width: 18rem;">
+				<img src="@book.Image" class="card-img-top" alt="@book.Title">
+				<div class="card-body">
+					<h5 class="card-title">@book.Title - @book.Price.ToString("C")</h5>
+					<p class="card-text"></p>
+					<a href="#" class="btn btn-primary">View Book</a>
+				</div>
+			</div>
+		}
+	}
+
+	<button @onclick="GoToEdit" class="btn btn-warning">
+		<span class="oi oi-pencil"></span>
+		Edit Author
+	</button>
+	<button @onclick="BackToList" class="btn btn-outline-secondary">
+		<span class="oi oi-media-skip-backward"></span>
+		Back To List
+	</button>
 </EditForm>
 
 @code {
 	// parameter must have a "public"
 	[Parameter] public int Id { get; set; }
 
-	private AuthorReadOnlyDto Author = new AuthorReadOnlyDto();
+	private AuthorDetailsDto Author = new AuthorDetailsDto();
 
 	protected override async Task OnInitializedAsync()
 	{
 		var response = await authorService.GetAuthor(Id);
-		if(response.Success)
+		if (response.Success)
 		{
 			Author = response.Data;
 		}
 	}
 
-	private void BackToList() {
+	private void BackToList()
+	{
 		navManager.NavigateTo("/authors/");
 	}
-	
-	private void GoToEdit() {
+
+	private void GoToEdit()
+	{
 		navManager.NavigateTo($"/authors/update/{Author.Id}");
 	}
 }

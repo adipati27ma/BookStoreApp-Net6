@@ -5,122 +5,122 @@ using BookStoreApp.Blazor.Server.UI.Services.Base;
 
 namespace BookStoreApp.Blazor.Server.UI.Services
 {
-    public class AuthorService : BaseHttpServices, IAuthorService
-    {
-        private readonly IClient client;
+	public class AuthorService : BaseHttpServices, IAuthorService
+	{
+		private readonly IClient client;
 		private readonly IMapper mapper;
 
 		//private readonly ILocalStorageService localstorage;
 
 		public AuthorService(IClient client, ILocalStorageService localstorage, IMapper mapper) : base(client, localstorage)
-        {
-            this.client = client;
+		{
+			this.client = client;
 			this.mapper = mapper;
 			//this.localstorage = localstorage;
 		}
 
-        public async Task<Response<int>> CreateAuthor(AuthorCreateDto author)
-        {
-            Response<int> response = new();
-            try
-            {
-                // attach header, post Data, ...
-                await GetBearerToken();
-                await client.AuthorsPOSTAsync(author);
-            }
-            catch (ApiException exception)
-            {
+		public async Task<Response<int>> CreateAuthor(AuthorCreateDto author)
+		{
+			Response<int> response = new();
+			try
+			{
+				// attach header, post Data, ...
+				await GetBearerToken();
+				await client.AuthorsPOSTAsync(author);
+			}
+			catch (ApiException exception)
+			{
 
-                response = ConvertApiExceptions<int>(exception);
-            }
+				response = ConvertApiExceptions<int>(exception);
+			}
 
-            return response;
-        }
+			return response;
+		}
 
 		public async Task<Response<int>> EditAuthor(int id, AuthorUpdateDto author)
 		{
-            Response<int> response = new();
-            try
-            {
-                await GetBearerToken();
-                await client.AuthorsPUTAsync(id, author);
-            }
-            catch (ApiException exception)
-            {
+			Response<int> response = new();
+			try
+			{
+				await GetBearerToken();
+				await client.AuthorsPUTAsync(id, author);
+			}
+			catch (ApiException exception)
+			{
 
-                response = ConvertApiExceptions<int>(exception);
-            }
+				response = ConvertApiExceptions<int>(exception);
+			}
 
-            return response;
-        }
+			return response;
+		}
 
-		public async Task<Response<AuthorReadOnlyDto>> GetAuthor(int id)
+		public async Task<Response<AuthorDetailsDto>> GetAuthor(int id)
 		{
-            Response<AuthorReadOnlyDto> response;
+			Response<AuthorDetailsDto> response;
 
-            try
-            {
-                // attach header, fetchData, return data & the success flag
-                await GetBearerToken();
-                var data = await client.AuthorsGETAsync(id);
-                response = new Response<AuthorReadOnlyDto>
-                {
-                    Data = data,
-                    Success = true,
-                };
-            }
-            catch (ApiException exception)
-            {
-                response = ConvertApiExceptions<AuthorReadOnlyDto>(exception);
-            }
+			try
+			{
+				// attach header, fetchData, return data & the success flag
+				await GetBearerToken();
+				var data = await client.AuthorsGETAsync(id);
+				response = new Response<AuthorDetailsDto>
+				{
+					Data = data,
+					Success = true,
+				};
+			}
+			catch (ApiException exception)
+			{
+				response = ConvertApiExceptions<AuthorDetailsDto>(exception);
+			}
 
-            return response;
-        }
+			return response;
+		}
 
 		public async Task<Response<AuthorUpdateDto>> GetAuthorForUpdate(int id)
 		{
-            Response<AuthorUpdateDto> response;
+			Response<AuthorUpdateDto> response;
 
-            try
-            {
-                // attach header, fetchData, map data type + return data & the success flag
-                await GetBearerToken();
-                var data = await client.AuthorsGETAsync(id);
-                response = new Response<AuthorUpdateDto>
-                {
-                    Data = mapper.Map<AuthorUpdateDto>(data),
-                    Success = true,
-                };
-            }
-            catch (ApiException exception)
-            {
-                response = ConvertApiExceptions<AuthorUpdateDto>(exception);
-            }
+			try
+			{
+				// attach header, fetchData, map data type + return data & the success flag
+				await GetBearerToken();
+				var data = await client.AuthorsGETAsync(id);
+				response = new Response<AuthorUpdateDto>
+				{
+					Data = mapper.Map<AuthorUpdateDto>(data),
+					Success = true,
+				};
+			}
+			catch (ApiException exception)
+			{
+				response = ConvertApiExceptions<AuthorUpdateDto>(exception);
+			}
 
-            return response;
-        }
+			return response;
+		}
 
 		public async Task<Response<List<AuthorReadOnlyDto>>> GetAuthors()
-        {
-            Response<List<AuthorReadOnlyDto>> response;
+		{
+			Response<List<AuthorReadOnlyDto>> response;
 
-            try
-            {
-                // attach header, fetchData, return data & the success flag
-                await GetBearerToken();
-                var data = await client.AuthorsAllAsync();
-                response = new Response<List<AuthorReadOnlyDto>>
-                {
-                    Data = data.ToList(),
-                    Success = true,
-                };
-            }
-            catch (ApiException exception)
-            {
-                response = ConvertApiExceptions<List<AuthorReadOnlyDto>>(exception);
-            }
+			try
+			{
+				// attach header, fetchData, return data & the success flag
+				await GetBearerToken();
+				var data = await client.AuthorsAllAsync();
+				response = new Response<List<AuthorReadOnlyDto>>
+				{
+					Data = data.ToList(),
+					Success = true,
+				};
+			}
+			catch (ApiException exception)
+			{
+				response = ConvertApiExceptions<List<AuthorReadOnlyDto>>(exception);
+			}
 
-            return response;
-        }
-    }
+			return response;
+		}
+	}
 }
