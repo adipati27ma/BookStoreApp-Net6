@@ -10,13 +10,13 @@
 		<ValidationSummary />
 		<div class="form-group">
 			<label for="email">Email Address</label>
-			<InputText class="form-control" @bind-Value="LoginModel.Email" />
+			<InputText class="form-control" @bind-Value="LoginModel.Email" id="email" />
 			<ValidationMessage For="@(() => LoginModel.Email)" />
 		</div>
 		<br />
 		<div class="form-group">
-			<label for="email">Password</label>
-			<InputText class="form-control" type="password" @bind-Value="LoginModel.Password" />
+			<label for="password">Password</label>
+			<InputText class="form-control" type="password" @bind-Value="LoginModel.Password" id="password" />
 			<ValidationMessage For="@(() => LoginModel.Password)" />
 		</div>
 		<br />
