@@ -102,7 +102,8 @@
 		{
 			if (file.Size > maxFileSize)
 			{
-				UploadFileWarning = "Please select a valid image file (*.jpg | *.png)";
+				UploadFileWarning = "The maximum file upload is 5 MB";
+				return;
 			}
 			// cara membaca file extension dari file yang diinputkan
 			var ext = System.IO.Path.GetExtension(file.Name);
