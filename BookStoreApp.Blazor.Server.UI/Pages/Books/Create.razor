@@ -86,15 +86,6 @@
 		}
 	}
 
-	private async Task HandleBookCreate()
-	{
-		var response = await bookService.Create(Book);
-		if (response.Success)
-		{
-			BackToList();
-		}
-	}
-
 	private async Task HandleFileSelection(InputFileChangeEventArgs e)
 	{
 		var file = e.File;
@@ -120,6 +111,15 @@
 			Book.ImageData = base64String;
 			Book.OriginalImageName = file.Name;
 			img = $"data:{imageType}; base64, {base64String}";
+		}
+	}
+
+	private async Task HandleBookCreate()
+	{
+		var response = await bookService.Create(Book);
+		if (response.Success)
+		{
+			BackToList();
 		}
 	}
 
